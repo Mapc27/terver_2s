@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: nginx
+    image: lawyer-nginx:latest
+    ports:
+      - 80:80
+    build:
+      context: .
+      dockerfile: deploy/nginx/Dockerfile
+    depends_on:
+      - app
+    networks:
+      - nginx_network
+    restart: always
+  app:
+    container_name: app
+    image: terver_2s:latest
+    build:
+      context: .
+      dockerfile: deploy/python/Dockerfile
+    expose:
+      - 8000
+    networks:
+      - nginx_network
+    restart: always
+networks:
+  nginx_network:
+    driver: bridge

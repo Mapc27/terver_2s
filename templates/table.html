@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        .general{
+            padding: 20px;
+        }
+
+        .strong {
+            font-weight: bold;
+        }
+
+        .under-table{
+            display: flex;
+            justify-content: space-between;
+            margin: auto 50px 200px;
+        }
+        .title{
+            text-align: center;
+        }
+        .parameters{
+            font-size: 20px;
+            margin: auto 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="table-block general">
+  <table class="table table-bordered table-striped table-hover border-dark">
+      <thead class="table-dark">
+        <tr>
+            <th scope="col">Интервалы</th>
+            <th scope="col">h<sub>i</sub></th>
+            <th scope="col">X<sub>сер</sub></th>
+            <th scope="col">X<sub>сер</sub> - X̃ = z<sub>i</sub></th>
+            <th scope="col">z<sub>i</sub><sup>2</sup></th>
+            <th scope="col">w<sub>i</sub></th>
+            <th scope="col">n<sub>i</sub><sup>нак</sup></th>
+            <th scope="col">z<sub>i</sub><sup>3</sup> ∙ w<sub>i</sub></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% if number_of_groups %}
+          {% for i in range(number_of_groups) %}
+              <tr>
+                  <td>{{ intervals[i][0] | round(2) }} &mdash; {{ intervals[i][1] | round(2) }}</td>
+                  <td>{{ numbers_of_each_interval[i] | round(2) }}</td>
+                  <td>{{ mean_values[i] | round(2) }}</td>
+                  <td>{{ z[i] | round(2) }}</td>
+                  <td>{{ z_2[i] | round(2) }}</td>
+                  <td>{{ relative_frequencies[i] | round(2) }}</td>
+                  <td>{{ n_accumulated[i] | round(2) }}</td>
+                  <td>{{ z_3_multiplication_relative_frequencies[i] | round(2) }}</td>
+              </tr>
+          {% endfor %}
+      {% endif %}
+      </tbody>
+  </table>
+</div>
+{% if name %}
+<div class="title">
+    <h1>{{ name }}</h1>
+</div>
+{% endif %}
+<div class="under-table general">
+    <div class="parameters strong">
+        <div>n = {{ number }}</div>
+        <div>X<sub>min</sub> = {{ min }}</div>
+        <div>X<sub>max</sub> = {{ max }}</div>
+        <div>K = {{ interval_step }}</div>
+        <div>l = {{ number_of_groups }}</div>
+        <br>
+        <div>X̃ = {{ sample_mean }}</div>
+        <div>σ̃ <sup>2</sup> = {{ dispersion }}</div>
+        <div>σ̃ = {{ standard_deviation }}</div>
+        <br>
+        <div>M<sub>0</sub> = {{ fashion }}</div>
+        <div>m<sub>e</sub> = {{ median }}</div>
+        <br>
+        <div>A<sub>3</sub> = {{ coefficient_of_asymmetry }}</div>
+        <div>E<sub>k</sub> = {{ coefficient_of_kurtosis }}</div>
+        <div>V = {{ coefficient_of_variation }}%</div>
+        <br>
+        <div>γ = 0.95</div>
+        <div>{{ confidence_interval_of_sample_mean[0]  }} < x̅ < {{ confidence_interval_of_sample_mean[1]  }}</div>
+        <div>{{ confidence_interval_of_dispersion[0]  }} < σ̅ <sup>2</sup> < {{ confidence_interval_of_dispersion[1]  }}</div>
+        <div></div>
+    </div>
+    <div class="plot">
+        {{ the_div | safe }}
+    </div>
+
+</div>
+    {{ list }}
+    {{ the_script | safe }}
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.4.0.min.js" crossorigin="anonymous"></script>
+</body>
+</html>
